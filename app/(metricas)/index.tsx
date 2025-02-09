@@ -1,28 +1,49 @@
-import { StyleSheet, Image, Platform, Text, View, Pressable } from 'react-native';
+import { View } from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import ButtonActionBotton from '@/components/ui/ButtonActionBotton';
 import { useRouter } from 'expo-router';
 import SafeContainer from '@/components/SafeContainer';
+import { useState } from 'react';
+import Button from '@/components/ui/Button';
+import { Text } from '@/components/ThemedText';
 
 export default function HistoryMetrics() {
-   const router = useRouter()
+   const [history, setHistory] = useState([])
+   
    return (
       <SafeContainer>
-         <View style={{ alignSelf: "center" }}>
-            <Text style={{ color: "white" }}>no hay analisis</Text>
-            <Pressable onPress={() => { router.push("/detailMatrica") }}>
-               <Text style={{ color: "white" }}>ir a detalles</Text>
-            </Pressable>
-         </View>
-         <ButtonActionBotton />
-      </SafeContainer>
+         {
+            (history.length == 0)
+               ? <MessaggeEmptyHistory />
+               : (
+                  <View>
+                     <ButtonActionBotton />
+                  </View>
+               )
+         }
+         
+      </SafeContainer >
    );
+}
+
+const MessaggeEmptyHistory = () => {
+   const router = useRouter()
+
+   const onPress = () => {
+      router.push("/metricAnalysisForm")
+   }
+
+   return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
+         <View style={{ gap: 25, width: '80%' }}>
+            <View style={{ gap: 10, alignItems: "center", justifyContent: "center" }}>
+               <Text type="title">Oh oh, aqui no hay nada</Text>
+               <Text>Aún no tienes análisis. Realiza uno para comenzar.</Text>
+            </View>
+            <Button title='Realiza un analisis' onPress={onPress}/>
+         </View>
+      </View>
+   )
 }
 
 
