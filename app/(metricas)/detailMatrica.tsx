@@ -1,10 +1,11 @@
 import { StyleSheet, Image, Platform, Text } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
+import SafeContainer from '@/components/SafeContainer';
+
 export default function TabTwoScreen() {
   return (
-    <SafeAreaView>
+    <SafeContainer>
       <Text style={{color: "white"}}>Hola</Text>
-    </SafeAreaView>
+    </SafeContainer>
   );
 }
 

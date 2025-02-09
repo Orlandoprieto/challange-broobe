@@ -8,12 +8,12 @@ import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import ButtonActionBotton from '@/components/ui/ButtonActionBotton';
 import { useRouter } from 'expo-router';
-import { SafeAreaView } from "react-native-safe-area-context";
+import SafeContainer from '@/components/SafeContainer';
 
 export default function HistoryMetrics() {
    const router = useRouter()
    return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeContainer>
          <View style={{ alignSelf: "center" }}>
             <Text style={{ color: "white" }}>no hay analisis</Text>
             <Pressable onPress={() => { router.push("/detailMatrica") }}>
@@ -21,7 +21,7 @@ export default function HistoryMetrics() {
             </Pressable>
          </View>
          <ButtonActionBotton />
-      </SafeAreaView>
+      </SafeContainer>
    );
 }
 

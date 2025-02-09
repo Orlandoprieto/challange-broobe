@@ -7,12 +7,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { SafeAreaView } from "react-native-safe-area-context";
+import SafeContainer from '@/components/SafeContainer';
 
 export default function TabTwoScreen() {
    return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeContainer>
          <Text style={{ color: "white" }}>metricas analisis form</Text>
-      </SafeAreaView>
+      </SafeContainer>
 
    );
 }
