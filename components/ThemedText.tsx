@@ -29,7 +29,7 @@ export function Text({type = 'default', children}: ThemedTextProps) {
       fontSize: 16,
       lineHeight: 24,
       fontWeight: '600',
-      color: theme.textColorSecondary
+      color: theme.textColorPrimary
     },
     title: {
       fontSize: 28,

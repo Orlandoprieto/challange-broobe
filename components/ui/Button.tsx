@@ -11,7 +11,7 @@ interface Buttonprops {
 export default function Button({title, onPress}: Buttonprops) {
    const theme = useThemeColor()
    return (
-      <ButtonPaper style={{backgroundColor: theme.colorPrimary}} mode="contained" onPress={onPress}>
+      <ButtonPaper labelStyle={{color: theme.icon}} style={{backgroundColor: theme.colorPrimary}} mode="contained" onPress={onPress}>
          {title}
       </ButtonPaper>
    );
