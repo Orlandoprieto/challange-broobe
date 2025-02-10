@@ -15,7 +15,6 @@ export default function Form({ render }: FormProps) {
 
    const handleChange = (name: string, value: any) => {
       setData(prev => ({ ...prev, [name]: value }))
-      console.log(data)
    }
 
    return render({ data, handleChange })

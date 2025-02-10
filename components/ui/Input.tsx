@@ -7,7 +7,7 @@ import { IField } from "@/interfaces/interfaces";
 
 
 export default function Input({field, onChange}: IField) {
-   const [text, setText] = useState("");
+   const [text, setText] = useState("https://www.broobe.com/");
    const theme = useThemeColor()
 
    const onChangeText = (text: string) => {
