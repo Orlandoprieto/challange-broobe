@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Text } from "../ThemedText";
 import { TextInput } from "react-native-paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { IField } from "@/interfaces/interfaces";
 
@@ -15,6 +15,10 @@ export default function Input({field, onChange}: IField) {
       onChange(field, text)
    }
 
+   useEffect(() => {
+      onChangeText(text)
+   }, [])
+   
    return (
       <View style={{ gap: 10 }}>
          <Text type='defaultSemiBold'>Ingresa la url</Text>

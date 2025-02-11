@@ -4,15 +4,19 @@ import { FAB } from 'react-native-paper';
 import { useRouter } from "expo-router";
 import { useThemeColor } from '@/hooks/useThemeColor';
 
-export default function ButtonActionBotton() {
+interface ButtonActionBottonProps {
+   icon: "plus" | "content-save"
+   onClick?: () => void;
+}
+
+export default function ButtonActionBotton({icon, onClick }: ButtonActionBottonProps) {
    const theme = useThemeColor()
-   const router = useRouter();
    return (
       <FAB
-         icon="plus"
+         icon={icon}
          color={theme.icon}
          style={[styles.fab, { backgroundColor: theme.colorPrimary }]}
-         onPress={() => router.push("/metricAnalysisForm")}
+         onPress={onClick}
       />
    )
 }
@@ -21,7 +25,7 @@ const styles = StyleSheet.create({
    fab: {
       position: 'absolute',
       margin: 16,
-      right: 0,
-      bottom: 0,
+      right: 10,
+      bottom: 15,
    },
 })

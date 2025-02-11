@@ -1,74 +1,102 @@
-import { StyleSheet, Image, Platform, View, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import SafeContainer from '@/components/SafeContainer';
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native-paper';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState, useId } from 'react';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import analitysFetch from '@/services/analisysFetch';
-import { MetricHistory } from '@/interfaces/models';
+import { Category, MetricHistory } from '@/interfaces/models';
 import Grafics from '@/components/Grafics';
+import ButtonActionBotton from '@/components/ui/ButtonActionBotton';
+import { saveMetricToStorage } from '@/utils/utils'
+import Message from '@/components/Message';
 
 export default function TabTwoScreen() {
-  const [metricHistory, setMetricHistory] = useState<MetricHistory | null>(null)
-  const url = useLocalSearchParams()
-  const theme = useThemeColor()
-  const [showLoader, setShowLoader] = useState<boolean>(true)
+  const [metricHistory, setMetricHistory] = useState<MetricHistory | null>(null);
+  const [showLoader, setShowLoader] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
+  const url = useLocalSearchParams();
+  const theme = useThemeColor();
+  const router = useRouter()
 
   useEffect(() => {
-    const json = JSON.stringify(url)
-    const data = JSON.parse(json) as { url: string }
-    console.log(data.url)
+    if (!url) return;
+
+    const json = JSON.stringify(url);
+    const data = JSON.parse(json) as { url: string };
+
     analitysFetch(data.url)
-      .then(data => {
-        const metrics = data as MetricHistory
-        setMetricHistory(metrics)
+      .then((data) => {
+        setMetricHistory(data);
       })
-      .catch(error => {
-        const err = error as Error
-        console.error(err.message)
+      .catch(() => {
+        setError(true);
       })
       .finally(() => {
-        setShowLoader(false)
-      })
-  }, [])
+        setShowLoader(false);
+      });
+  }, [url]);
 
+  const handleSave = async () => {
+    if (metricHistory) {
+      await saveMetricToStorage(metricHistory);
+      router.push("/");
+    }
+  };
+
+  if (showLoader) {
+    return (
+      <SafeContainer>
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size={50} color={theme.colorPrimary} />
+        </View>
+      </SafeContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <Message
+        title="Error al obtener las métricas"
+        paraf='Por favor, verifica tu conexión e intenta nuevamente. Si el problema persiste, contacta al soporte.'
+      />
+    );
+  }
 
   return (
     <SafeContainer>
-      {metricHistory ? (
-        <ScrollView>
-          <View style={{ gap: 20 }}>
-            {Object.keys(metricHistory.lighthouseResult.categories).map((categoryKey, index) => {
-              const category = metricHistory.lighthouseResult.categories[categoryKey]["auditRefs"];
-
-              if (category) {
-                return (
-                  <Grafics key={index} data={category} title={categoryKey} />
-                );
-              } else {
-                return null;
-              }
+      <ScrollView>
+        <View style={styles.contentContainer}>
+          {metricHistory.categories &&
+            Object.keys(metricHistory.categories).map((categoryKey) => {
+              const category = metricHistory.categories[categoryKey] as Category;
+              return category && (
+                <Grafics key={categoryKey} data={category.auditRefs} title={category.title} />
+              )
             })}
-          </View>
-        </ScrollView>
-      ) : (
-        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-          <ActivityIndicator size={50} color={theme.colorPrimary}/>
         </View>
-      )}
+      </ScrollView>
+      <ButtonActionBotton icon="content-save" onClick={handleSave} />
     </SafeContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+  },
+  contentContainer: {
+    gap: 20,
   },
 });

@@ -28,7 +28,7 @@ export default function Grafics({ title, data }: GraficsProps) {
                   },
                ],
             }}
-            width={Dimensions.get("window").width - 40}
+            width={Dimensions.get("window").width - 5}
             height={220}
             yAxisInterval={1}
             chartConfig={{

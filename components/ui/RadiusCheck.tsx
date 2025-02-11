@@ -13,7 +13,7 @@ export interface ChecksProps {
 }
 
 export default function RadiusCheck({ dataSource, field, onChange }: ChecksProps & IField) {
-   const [value, setValue] = useState<string>()
+   const [value, setValue] = useState<string>('DESKTOP')
    const theme = useThemeColor()
 
    const changeValue = (value: string) => {
