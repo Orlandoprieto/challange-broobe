@@ -1,5 +1,5 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { ChecksProps } from "./RadiusCheck";
@@ -7,6 +7,11 @@ import { IField } from "@/interfaces/interfaces";
 
 export default function CheckBoxGroup({ dataSource, field, onChange }: ChecksProps & IField) {
    const [checkeds, setCheckeds] = useState<string[]>([])
+   const theme = useThemeColor()
+
+   useEffect(() => {
+      onChange(field, checkeds)
+   }, [])
 
    const onChangeCheckeds = (value: string) => {
       setCheckeds(prev => {
@@ -22,9 +27,6 @@ export default function CheckBoxGroup({ dataSource, field, onChange }: ChecksPro
          return result
       });
    }
-
-   const theme = useThemeColor()
-
    return (
       <View>
          {dataSource.map(data => (

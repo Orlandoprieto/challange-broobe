@@ -24,7 +24,7 @@ export const saveMetricToStorage = async (newMetric: MetricHistory) => {
    try {
       const metrics = await getMetricHistory()
       const newId = newMetric.id + Math.random() / 1000
-      const updatedMetrics = [...metrics, {...newMetric, id: newId}];
+      const updatedMetrics = [...metrics, {...newMetric, url: newMetric.id, id: newId}];
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMetrics));
       console.log('Métrica guardada correctamente');
    } catch (error) {

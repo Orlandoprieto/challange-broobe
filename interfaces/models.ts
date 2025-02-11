@@ -1,5 +1,6 @@
 export interface MetricHistory {
-   id: string;
+   id: string
+   url: string
    categories: {
       performance: Category;
       accessibility: Category;

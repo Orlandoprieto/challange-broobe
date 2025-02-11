@@ -5,20 +5,27 @@ import React from 'react';
 
 interface ThemedTextProps {
   children: React.ReactNode
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'error';
 };
 
 interface Styles {
   default: TextStyle;
   defaultSemiBold: TextStyle;
   title: TextStyle;
-  subtitle: TextStyle;
+  subtitle: TextStyle
+  error: TextStyle
 }
 
 export function Text({type = 'default', children}: ThemedTextProps) {
   const theme = useThemeColor();
 
   const styles: Styles = {
+    error: {
+      fontSize: 16,
+      lineHeight: 24,
+      color: theme.error,
+      textAlign: "center"
+    },
     default: {
       fontSize: 16,
       lineHeight: 24,

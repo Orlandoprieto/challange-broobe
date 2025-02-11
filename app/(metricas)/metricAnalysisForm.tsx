@@ -8,19 +8,32 @@ import Input from '@/components/ui/Input';
 import Form from '@/components/form/Form.';
 import { useRouter } from 'expo-router';
 import { addParamsToURL } from '@/utils/utils';
-import { IData } from '@/interfaces/interfaces';
+import { formMetricsValidation } from '@/validations/formMetricsSearchs';
+import { useState } from 'react';
+import { ZodError } from 'zod';
 
 export default function TabTwoScreen() {
+   const [errorMessage, setErrorsMessage] = useState<string>()
    const router = useRouter()
 
    const makeAnalisys = (data) => {
+      const resultado = formMetricsValidation.safeParse(data);
+   
+      if (!resultado.success) {
+         const errors = resultado.error as ZodError;
+         const errorMessages = errors.errors.map(err => err.message).join("\n");
+         setErrorsMessage(errorMessages);
+         return;
+      }
+
       router.push({
-         pathname: '/detailMatrica', 
+         pathname: '/detailMatrica',
          params: {
             url: addParamsToURL(data)
          }
-      })
-   }
+      });
+   };
+   
 
    return (
       <SafeContainer>
@@ -44,6 +57,10 @@ export default function TabTwoScreen() {
                      </View>
 
                      <Button title='Analizar' onPress={() => makeAnalisys(data)} />
+
+                     {(errorMessage != '')
+                        && <Text type='error'>{errorMessage}</Text>}
+
                   </View>
                )}
             />
